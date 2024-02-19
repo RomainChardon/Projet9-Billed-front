@@ -14,12 +14,13 @@ export default () => {
   rootDiv.innerHTML = ROUTES({ pathname: window.location.pathname })
 
   window.onNavigate = (pathname) => {
-
     window.history.pushState(
       {},
       pathname,
       window.location.origin + pathname
     )
+    console.log(pathname);
+
     if (pathname === ROUTES_PATH['Login']) {
       rootDiv.innerHTML = ROUTES({ pathname })
       document.body.style.backgroundColor="#0E5AE5"

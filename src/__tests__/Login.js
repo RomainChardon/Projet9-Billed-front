@@ -111,6 +111,8 @@ describe("Given that I am a user on login page", () => {
       );
     });
 
+    console.log(screen);
+
     test("It should renders Bills page", () => {
       expect(screen.getAllByText("Mes notes de frais")).toBeTruthy();
     });
@@ -169,6 +171,7 @@ describe("Given that I am a user on login page", () => {
       };
 
       const inputEmailUser = screen.getByTestId("admin-email-input");
+      console.log(inputEmailUser);
       fireEvent.change(inputEmailUser, { target: { value: inputData.email } });
       expect(inputEmailUser.value).toBe(inputData.email);
 

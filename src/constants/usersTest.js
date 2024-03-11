@@ -2,5 +2,6 @@ export default [
     'cedric.hiely@billed.com',
     'christian.saluzzo@billed.com',
     'jean.limbert@billed.com',
-    'joanna.binet@billed.com'
+    'joanna.binet@billed.com',
+    'johndoe@email.com'
 ]

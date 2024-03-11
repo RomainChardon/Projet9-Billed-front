@@ -1,3 +1,7 @@
+npm run run:dev
+live-server
+npm run test
+
 
 ## L'architecture du projet :
 Ce projet, dit frontend, est connecté à un service API backend que vous devez aussi lancer en local.

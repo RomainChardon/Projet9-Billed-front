@@ -14,31 +14,48 @@ export default class NewBill {
     this.fileName = null
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
+    console.log(this.document);
+    console.log(this.onNavigate);
+    console.log(this.store);
   }
   handleChangeFile = e => {
+    console.log(e)
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
-    const formData = new FormData()
-    const email = JSON.parse(localStorage.getItem("user")).email
-    formData.append('file', file)
-    formData.append('email', email)
 
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true
-        }
-      })
-      .then(({fileUrl, key}) => {
-        console.log(fileUrl)
-        this.billId = key
-        this.fileUrl = fileUrl
-        this.fileName = fileName
-      }).catch(error => console.error(error))
+
+    if (this.checkTypeFile(fileName)) {
+
+      const formData = new FormData()
+      const email = JSON.parse(localStorage.getItem("user")).email
+
+      formData.append('file', file)
+      formData.append('email', email)
+
+      this.store
+          .bills()
+          .create({
+            data: formData,
+            headers: {
+              noContentType: true
+            }
+          })
+          .then(({fileUrl, key}) => {
+            console.log(fileUrl)
+            this.billId = key
+            this.fileUrl = fileUrl
+            this.fileName = fileName
+          }).catch(error => console.error(error))
+
+    } else {
+      this.document.querySelector(`input[data-testid="file"]`).value = '';
+      window.alert('mauvais type');
+    }
+
+
+
   }
   handleSubmit = e => {
     e.preventDefault()
@@ -59,6 +76,18 @@ export default class NewBill {
     }
     this.updateBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
+  }
+
+  checkTypeFile = e => {
+    const validType = [
+        'png',
+        'jpeg',
+        'jpg'
+    ]
+
+    const splitName = e.split('.');
+
+    return validType.includes(splitName[1]);
   }
 
   // not need to cover this function by tests

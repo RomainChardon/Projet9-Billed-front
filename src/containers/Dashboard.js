@@ -150,7 +150,7 @@ export default class {
       this.counter ++
     }
 
-    // Click pour ouvrir
+    // TODO open bill
     bills.forEach(bill => {
       // Désactiver l'event avant d'en ouvrir un autre
       $(`#open-bill${bill.id}`).off("click");

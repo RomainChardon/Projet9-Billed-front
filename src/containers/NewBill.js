@@ -14,18 +14,14 @@ export default class NewBill {
     this.fileName = null
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
-    console.log(this.document);
-    console.log(this.onNavigate);
-    console.log(this.store);
   }
   handleChangeFile = e => {
-    console.log(e)
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
 
-
+    // TODO check file new bill
     if (this.checkTypeFile(fileName)) {
 
       const formData = new FormData()
@@ -43,7 +39,6 @@ export default class NewBill {
             }
           })
           .then(({fileUrl, key}) => {
-            console.log(fileUrl)
             this.billId = key
             this.fileUrl = fileUrl
             this.fileName = fileName
@@ -51,7 +46,11 @@ export default class NewBill {
 
     } else {
       this.document.querySelector(`input[data-testid="file"]`).value = '';
-      window.alert('mauvais type');
+      const div = this.document.querySelector(`input[data-testid="file"]`).parentNode;
+      const p = document.createElement('p');
+      p.innerText = 'Mauvais format de fichier !';
+      p.style.color = 'red';
+      div.appendChild(p);
     }
 
 
@@ -59,7 +58,6 @@ export default class NewBill {
   }
   handleSubmit = e => {
     e.preventDefault()
-    console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,

@@ -19,7 +19,6 @@ export default () => {
       pathname,
       window.location.origin + pathname
     )
-    console.log(pathname);
 
     if (pathname === ROUTES_PATH['Login']) {
       rootDiv.innerHTML = ROUTES({ pathname })

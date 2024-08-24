@@ -21,7 +21,7 @@ export default class NewBill {
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
 
-    // TODO check file new bill
+    // 3- check file new bill
     if (this.checkTypeFile(fileName)) {
 
       const formData = new FormData()

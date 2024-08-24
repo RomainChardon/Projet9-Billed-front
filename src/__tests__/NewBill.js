@@ -85,7 +85,7 @@ describe("Given I am connected as an employee", () => {
         },
       });
 
-      expect(handleChangeFile).toHaveBeenCalled();
+      expect(handleChangeFile).toBeCalled();
     })
   })
 

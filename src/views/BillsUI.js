@@ -19,10 +19,10 @@ const row = (bill) => {
     `)
   }
 
-  // Sort bills
+  // 1- Sort bills
 const rows = (data) => {
     data = data || [];
-    const dataSorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const dataSorted = data.sort((a, b) => new Date(b.normalDate) - new Date(a.normalDate));
     return (dataSorted && dataSorted.length) ? dataSorted.map(bill => row(bill)).join("") : ""
 }
 

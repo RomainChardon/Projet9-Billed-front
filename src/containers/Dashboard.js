@@ -81,15 +81,11 @@ export default class {
   handleClickIconEye = () => {
     const billUrl = $('#icon-eye-d').attr("data-bill-url")
     const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.8)
-    $('#modaleFileAdmin1').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`)
+    $('#modaleFileAdmin1').find(".modal-body").html(`<div style='text-align: center; object-fit: cover;'><img style='object-fit: cover;' width='100%' src=${billUrl} alt="Bill"/></div>`)
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
   handleEditTicket(e, bill, bills) {
-    console.log(e)
-    console.log(this.id)
-    console.log(bill)
-    console.log(bills)
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
     if (this.counter % 2 === 0) {
@@ -150,7 +146,7 @@ export default class {
       this.counter ++
     }
 
-    // TODO open bill
+    // 4- open bill
     bills.forEach(bill => {
       // Désactiver l'event avant d'en ouvrir un autre
       $(`#open-bill${bill.id}`).off("click");

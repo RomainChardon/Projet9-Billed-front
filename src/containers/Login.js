@@ -16,7 +16,6 @@ export default class Login {
     formAdmin.addEventListener("submit", this.handleSubmitAdmin)
   }
   handleSubmitEmployee = e => {
-    // TODO fix show bill
     e.preventDefault()
     const user = {
       type: "Employee",
@@ -39,7 +38,7 @@ export default class Login {
   }
 
   handleSubmitAdmin = e => {
-    // TODO fix show bill
+    // 2- fix show bill
     e.preventDefault()
     const user = {
       type: "Admin",

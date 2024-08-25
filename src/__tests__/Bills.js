@@ -11,6 +11,9 @@ import mockStore from "../__mocks__/store.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 
 import router from "../app/Router.js";
+import Bills from "../containers/Bills.js";
+import userEvent from "@testing-library/user-event";
+import NewBill from "../containers/NewBill.js";
 
 jest.mock("../app/Store.js", () => mockStore)
 
@@ -33,14 +36,6 @@ describe("Given I am connected as an employee", () => {
       expect(windowIcon).toHaveClass('active-icon')
 
     })
-    test("Then bills should be ordered from earliest to latest", () => {
-      document.body.innerHTML = BillsUI({ data: bills })
-      const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
-      const antiChrono = (a, b) => ((new Date(a) < new Date(b)) ? 1 : -1)
-      const datesSorted = [...dates].sort(antiChrono)
-      // 1 - Sort bills fix test
-      expect(datesSorted).toEqual(["2004-04-04", "2003-03-03", "2002-02-02", "2001-01-01"]);
-    })
   })
 
   describe("When Employee Navigate on Bills Dashbord", () => {
@@ -61,6 +56,40 @@ describe("Given I am connected as an employee", () => {
       document.body.appendChild(root);
       router();
     });
+
+    test("Then bills should be ordered from earliest to latest", () => {
+      document.body.innerHTML = BillsUI({ data: bills })
+      const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
+      const antiChrono = (a, b) => ((new Date(a) < new Date(b)) ? 1 : -1)
+      const datesSorted = [...dates].sort(antiChrono)
+      // 1 - Sort bills fix test
+      expect(datesSorted).toEqual(["2004-04-04", "2003-03-03", "2002-02-02", "2001-01-01"]);
+    })
+
+    test("test handleClickIconEye", () => {
+      const bill = new Bills({
+        document,
+        onNavigate,
+        store: mockStore,
+        localStorage: localStorageMock,
+      });
+
+      $.fn.modal = jest.fn();
+
+      document.body.innerHTML = BillsUI({ data: bills })
+
+      const iconEye = screen.getAllByTestId("btn-new-bill")[0];
+      const handleClickIconEye = jest.fn(
+          bill.handleClickIconEye(iconEye)
+      );
+
+      iconEye.addEventListener("click", handleClickIconEye);
+      userEvent.click(iconEye);
+
+      expect(handleClickIconEye).toHaveBeenCalled();
+      expect($.fn.modal).toHaveBeenCalled();
+      expect(screen.getByTestId("modalEye")).toBeTruthy();
+    })
 
     test("fetches bills from an API and fails with 404 message error", async () => {
       mockStore.bills.mockImplementationOnce(() => {

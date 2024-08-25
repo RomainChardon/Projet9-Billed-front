@@ -45,17 +45,21 @@ export default class NewBill {
           }).catch(error => console.error(error))
 
     } else {
+      this.changeFileError();
+    }
+  }
+
+  changeFileError = e => {
       this.document.querySelector(`input[data-testid="file"]`).value = '';
       const div = this.document.querySelector(`input[data-testid="file"]`).parentNode;
       const p = document.createElement('p');
+      p.dataset.testid = "error-file";
       p.innerText = 'Mauvais format de fichier !';
       p.style.color = 'red';
       div.appendChild(p);
-    }
-
-
-
   }
+
+
   handleSubmit = e => {
     e.preventDefault()
     const email = JSON.parse(localStorage.getItem("user")).email

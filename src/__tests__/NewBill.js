@@ -34,7 +34,7 @@ describe("Given I am connected as an employee", () => {
       expect(windowIcon).toHaveClass('active-icon')
     })
 
-    test("add file", async () => {
+    test("test adding file with the correct format", async () => {
       const newBill = new NewBill({
         document,
         onNavigate,
@@ -61,7 +61,7 @@ describe("Given I am connected as an employee", () => {
 
     })
 
-    test("test type file", async () => {
+    test("test adding file with the wrong format", async () => {
       const newBill = new NewBill({
         document,
         onNavigate,
@@ -78,14 +78,17 @@ describe("Given I am connected as an employee", () => {
       fireEvent.change(inputFile, {
         target: {
           files: [
-            new File(["../assets/images/facturefreemobile.jpg"], "facturefreemobile.jpg", {
-              type: "image/jpg",
+            new File(["../assets/images/test.txt"], "test.txt", {
+              type: "application/txt",
             }),
           ],
         },
       });
 
       expect(handleChangeFile).toBeCalled();
+      expect(screen.getByText("Envoyer une note de frais")).toBeTruthy();
+      expect(screen.getAllByTestId("error-file")).toBeTruthy();
+
     })
   })
 

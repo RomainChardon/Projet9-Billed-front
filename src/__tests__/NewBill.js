@@ -9,6 +9,10 @@ import {localStorageMock} from "../__mocks__/localStorage.js";
 import router from "../app/Router.js";
 import {ROUTES_PATH} from "../constants/routes.js";
 import NewBill from "../containers/NewBill.js";
+import Bills from "../containers/Bills.js";
+import BillsUI from "../views/BillsUI.js";
+import {bills} from "../fixtures/bills.js";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("../app/Store.js", () => mockStore)
 
@@ -33,6 +37,7 @@ describe("Given I am connected as an employee", () => {
       //to-do write expect expression
       expect(windowIcon).toHaveClass('active-icon')
     })
+
 
     test("test adding file with the correct format", async () => {
       const newBill = new NewBill({

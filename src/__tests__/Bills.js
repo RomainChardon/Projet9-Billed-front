@@ -6,7 +6,7 @@ import {screen, waitFor, getByTestId} from "@testing-library/dom"
 import "@testing-library/jest-dom";
 import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
-import { ROUTES_PATH} from "../constants/routes.js";
+import {ROUTES, ROUTES_PATH} from "../constants/routes.js";
 import mockStore from "../__mocks__/store.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 
@@ -70,15 +70,13 @@ describe("Given I am connected as an employee", () => {
       const bill = new Bills({
         document,
         onNavigate,
-        store: mockStore,
-        localStorage: localStorageMock,
+        store: null,
+        localStorage: window.localStorage,
       });
 
       $.fn.modal = jest.fn();
 
-      document.body.innerHTML = BillsUI({ data: bills })
-
-      const iconEye = screen.getAllByTestId("btn-new-bill")[0];
+      const iconEye = screen.getAllByTestId("icon-eye")[0];
       const handleClickIconEye = jest.fn(
           bill.handleClickIconEye(iconEye)
       );
@@ -88,7 +86,30 @@ describe("Given I am connected as an employee", () => {
 
       expect(handleClickIconEye).toHaveBeenCalled();
       expect($.fn.modal).toHaveBeenCalled();
-      expect(screen.getByTestId("modalEye")).toBeTruthy();
+      expect(screen.getAllByTestId("modalEye")[0]).toBeTruthy();
+    })
+
+    test("test handleClickNewBill", () => {
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+
+      const bill = new Bills({
+        document,
+        onNavigate,
+        store: null,
+        bills: bills,
+        localStorage: window.localStorage,
+      });
+
+      const btnNew = screen.getAllByTestId("btn-new-bill")[0];
+      const handleClickNewBill = jest.fn(bill.handleClickNewBill);
+
+      btnNew.addEventListener("click", handleClickNewBill);
+      userEvent.click(btnNew);
+
+      expect(handleClickNewBill).toHaveBeenCalled();
+      expect(screen.getByText("Envoyer une note de frais")).toBeTruthy();
     })
 
     test("fetches bills from an API and fails with 404 message error", async () => {

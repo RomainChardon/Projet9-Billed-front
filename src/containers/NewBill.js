@@ -23,7 +23,12 @@ export default class NewBill {
 
     // 3- check file new bill
     if (this.checkTypeFile(fileName)) {
+      const fileDiv = document.querySelector(`input[data-testid="file"]`).parentNode
+      const errorText = document.querySelector(`p[data-testid="error-file"]`)
 
+      if (errorText != null) {
+        fileDiv.removeChild(errorText);
+      }
       const formData = new FormData()
       const email = JSON.parse(localStorage.getItem("user")).email
 
@@ -48,17 +53,6 @@ export default class NewBill {
       this.changeFileError();
     }
   }
-
-  changeFileError = e => {
-      this.document.querySelector(`input[data-testid="file"]`).value = '';
-      const div = this.document.querySelector(`input[data-testid="file"]`).parentNode;
-      const p = document.createElement('p');
-      p.dataset.testid = "error-file";
-      p.innerText = 'Mauvais format de fichier !';
-      p.style.color = 'red';
-      div.appendChild(p);
-  }
-
 
   handleSubmit = e => {
     e.preventDefault()
@@ -90,6 +84,16 @@ export default class NewBill {
     const splitName = e.split('.');
 
     return validType.includes(splitName[1]);
+  }
+
+  changeFileError = e => {
+    this.document.querySelector(`input[data-testid="file"]`).value = '';
+    const div = this.document.querySelector(`input[data-testid="file"]`).parentNode;
+    const p = document.createElement('p');
+    p.dataset.testid = "error-file";
+    p.innerText = 'Mauvais format de fichier !';
+    p.style.color = 'red';
+    div.appendChild(p);
   }
 
   // not need to cover this function by tests
